@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+
+  flyway:
+    image: registry-1.docker.io/flyway/flyway:9.2.2
+    command: -url=jdbc:postgresql://db/db -user=db -password=db -connectRetries=60 migrate
+    volumes:
+      - ../../migrations/flyway/sql:/flyway/sql
+    depends_on:
+      db:
+        condition: service_healthy
+
+  app:
+    ports:
+      - "3000"
+    build:
+      context: ./../../
+      dockerfile: ./ops/docker/Dockerfile
+      target: application
+    volumes:
+      - ./../../:/app:rw
+    environment:
+      # Database envs
+      DB_DATABASE: db
+      DB_HOST: db
+      DB_PASSWORD: db
+      DB_PORT: 5432
+      DB_USERNAME: db
+
+  db:
+    image: postgres:13.3
+    restart: always
+    environment:
+      POSTGRES_USER: db
+      POSTGRES_HOST: localhost
+      POSTGRES_PASSWORD: db
+      POSTGRES_DATABASE: db
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-U", "postgres" ]
+      interval: 5s
+      timeout: 1s
+      retries: 2
