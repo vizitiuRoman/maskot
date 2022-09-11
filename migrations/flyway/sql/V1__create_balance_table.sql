@@ -8,3 +8,6 @@ CREATE TABLE balance
 );
 
 CREATE INDEX IF NOT EXISTS balance_player ON balance (player_name);
+
+INSERT INTO balance(balance, player_name)
+VALUES (10000, 'player1');
