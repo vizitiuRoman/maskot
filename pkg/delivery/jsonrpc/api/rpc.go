@@ -19,8 +19,8 @@ func NewRpc(seamlessUseCases *seamless.UseCases) *Rpc {
 	}
 }
 
-func (b *Rpc) WithdrawAndDeposit(r *http.Request, input *WithdrawAndDepositInput, output *WithdrawAndDepositOutput) error {
-	result, err := b.seamlessUseCases.WithdrawAndDeposit.Execute(r.Context(), &withdraw_and_deposit.Input{
+func (rpc *Rpc) WithdrawAndDeposit(r *http.Request, input *WithdrawAndDepositInput, output *WithdrawAndDepositOutput) error {
+	result, err := rpc.seamlessUseCases.WithdrawAndDeposit.Execute(r.Context(), &withdraw_and_deposit.Input{
 		Currency:             input.Currency,
 		PlayerName:           input.PlayerName,
 		Withdraw:             input.Withdraw,
@@ -46,8 +46,8 @@ func (b *Rpc) WithdrawAndDeposit(r *http.Request, input *WithdrawAndDepositInput
 	return nil
 }
 
-func (b *Rpc) GetBalance(r *http.Request, input *GetBalanceInput, output *GetBalanceOutput) error {
-	result, err := b.seamlessUseCases.GetBalance.Execute(r.Context(), &get_balance.Input{
+func (rpc *Rpc) GetBalance(r *http.Request, input *GetBalanceInput, output *GetBalanceOutput) error {
+	result, err := rpc.seamlessUseCases.GetBalance.Execute(r.Context(), &get_balance.Input{
 		PlayerName: input.PlayerName,
 	})
 
@@ -61,8 +61,8 @@ func (b *Rpc) GetBalance(r *http.Request, input *GetBalanceInput, output *GetBal
 	return nil
 }
 
-func (b *Rpc) RollbackTransaction(r *http.Request, input *RollbackTransactionInput, output *RollbackTransactionOutput) error {
-	_, err := b.seamlessUseCases.RollbackTransaction.Execute(r.Context(), &rollback_transaction.Input{
+func (rpc *Rpc) RollbackTransaction(r *http.Request, input *RollbackTransactionInput, output *RollbackTransactionOutput) error {
+	_, err := rpc.seamlessUseCases.RollbackTransaction.Execute(r.Context(), &rollback_transaction.Input{
 		PlayerName:     input.PlayerName,
 		TransactionRef: input.TransactionRef,
 	})

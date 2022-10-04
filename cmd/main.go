@@ -47,7 +47,7 @@ func main() {
 		}
 	}()
 
-	log.Println("Server started and listening")
+	log.Println("Server started and listening on port: 8080")
 	<-signalChan
 	gracefulStop(db)
 }
