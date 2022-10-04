@@ -1,7 +1,29 @@
 ## Run application in dev mode
 
 ```bash
-docker-compose -f ./ops/docker/docker-compose.yaml -f docker-compose.override.yaml up -d
+$ docker-compose -f ./ops/docker/docker-compose.yaml -f docker-compose.override.yaml up -d
+```
+
+And if you see the following output then services is started ok.
+```bash
+Running 3/3
+  Container docker-db-1      Healthy                                                                                                                6.3s
+  Container docker-app-1     Started                                                                                                                0.8s
+  Container docker-flyway-1  Started
+```
+
+## Some other commands
+
+```bash
+$ docker-compose ps
+
+CONTAINER ID   IMAGE           COMMAND                  CREATED          STATUS                    PORTS                                                                                    NAMES
+c380f007dec7   postgres:13.3   "docker-entrypoint.s…"   34 seconds ago   Up 33 seconds (healthy)   0.0.0.0:5432->5432/tcp, :::5432->5432/tcp                                                docker-db-1
+7970b55a9eb8   docker-app      "/bin/sh -c /entrypo…"   34 seconds ago   Up 33 seconds             0.0.0.0:8080->8080/tcp, :::8080->8080/tcp, 0.0.0.0:49153->3000/tcp, :::49153->3000/tcp   docker-app-1
+
+$ docker logs docker-app-1
+
+2022/10/04 14:27:25 Server started and listening on port: 8080
 ```
 
 ## Example requests
