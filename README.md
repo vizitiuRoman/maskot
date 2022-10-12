@@ -37,7 +37,7 @@ Accept: application/json
 Content-Type: application/json
 Accept-Encoding: gzip
 
-{"jsonrpc":"2.0","method":"rpc.GetBalance","params":{"callerId":1,"playerName":"player1","currency":"EUR","gameId":"riot"},"id":0}
+{"jsonrpc":"2.0","method":"getBalance","params":{"callerId":1,"playerName":"player1","currency":"EUR","gameId":"riot"},"id":0}
 
 ---
 
@@ -59,7 +59,7 @@ Accept: application/json
 Content-Type: application/json
 Accept-Encoding: gzip
 
-{"jsonrpc":"2.0","method":"rpc.WithdrawAndDeposit","params":{"callerId":1,"playerName":"player1","withdraw":400,"deposit":200,"currency":"EUR","transactionRef":"1:UOwGgNHPgq3OkqRE","gameRoundRef":"1wawxl:39","gameId":"riot","reason":"GAME_PLAY_FINAL","sessionId":"qx9sgvvpihtrlug","spinDetails":{"betType":"spin","winType":"standart"}},"id":0}
+{"jsonrpc":"2.0","method":"withdrawAndDeposit","params":{"callerId":1,"playerName":"player1","withdraw":400,"deposit":200,"currency":"EUR","transactionRef":"1:UOwGgNHPgq3OkqRE","gameRoundRef":"1wawxl:39","gameId":"riot","reason":"GAME_PLAY_FINAL","sessionId":"qx9sgvvpihtrlug","spinDetails":{"betType":"spin","winType":"standart"}},"id":0}
 
 ---
 
@@ -81,7 +81,7 @@ Accept: application/json
 Content-Type: application/json
 Accept-Encoding: gzip
 
-{"jsonrpc":"2.0","method":"rpc.RollbackTransaction","params":{"callerId":1,"playerName":"player1","transactionRef":"1:UOwGgNHPgq3OkqRE","gameId":"riot","sessionId":"qx9sgvvpihtrlug","gameRoundRef":"1wawxl:39"},"id":0}
+{"jsonrpc":"2.0","method":"rollbackTransaction","params":{"callerId":1,"playerName":"player1","transactionRef":"1:UOwGgNHPgq3OkqRE","gameId":"riot","sessionId":"qx9sgvvpihtrlug","gameRoundRef":"1wawxl:39"},"id":0}
 
 ---
 
