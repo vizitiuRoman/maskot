@@ -75,7 +75,7 @@ func main() {
 		WadUseCase: wadUseCase,
 		RtUseCase:  rtUseCase,
 	})
-	mux, err := mustInitMux(rpcHandler)
+	mux, err := mustInitMux(rpcHandler, log)
 	if err != nil {
 		log.Panic("failed to init mux", zap.Error(err))
 	}
