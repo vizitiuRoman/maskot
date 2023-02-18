@@ -16,7 +16,7 @@ type Config struct {
 	Password string
 }
 
-func NewPostgresDB(cfg *Config) (*sqlx.DB, error) {
+func NewPool(cfg *Config) (*sqlx.DB, func() error, error) {
 	db, err := sqlx.Connect(
 		"postgres",
 		fmt.Sprintf(
@@ -25,12 +25,12 @@ func NewPostgresDB(cfg *Config) (*sqlx.DB, error) {
 		),
 	)
 	if err != nil {
-		return nil, err
+		return nil, db.Close, err
 	}
 
 	if err := db.Ping(); err != nil {
-		return nil, err
+		return nil, db.Close, err
 	}
 
-	return db, nil
+	return db, db.Close, nil
 }

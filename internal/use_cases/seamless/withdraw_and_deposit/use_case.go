@@ -2,20 +2,23 @@ package withdraw_and_deposit
 
 import (
 	"context"
+	"fmt"
 
-	"github.com/maskot/pkg/helpers/use_cases"
-	"github.com/maskot/pkg/repositories"
-	"github.com/maskot/pkg/repositories/postgres/transaction"
-	"github.com/maskot/pkg/use_cases/errors"
+	"github.com/maskot/internal/helpers/use_cases"
+	"github.com/maskot/internal/model"
+	"github.com/maskot/internal/repo"
+	"github.com/maskot/internal/use_cases/errors"
 )
 
 type UseCase[In, Out any] struct {
-	repo *repositories.Repository
+	balanceRepo     repo.Balance
+	transactionRepo repo.Transaction
 }
 
-func NewUseCase(repos *repositories.Repository) use_cases.UseCase[Input, Output] {
+func NewUseCase(balanceRepo repo.Balance, transactionRepo repo.Transaction) use_cases.UseCase[Input, Output] {
 	return &UseCase[Input, Output]{
-		repo: repos,
+		balanceRepo:     balanceRepo,
+		transactionRepo: transactionRepo,
 	}
 }
 
@@ -27,12 +30,12 @@ func (uc *UseCase[In, Out]) Execute(ctx context.Context, input *Input) (*Output,
 		return nil, errors.ErrNegativeDepositCode
 	}
 
-	b, err := uc.repo.Balance.GetOrCreate(ctx, input.PlayerName)
+	b, err := uc.balanceRepo.FindOrCreate(ctx, input.PlayerName)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("cannot find or create balance: %w", err)
 	}
 
-	t, err := uc.repo.Transaction.Get(ctx, input.TransactionRef)
+	t, err := uc.transactionRepo.Find(ctx, input.TransactionRef)
 	if t != nil && err == nil {
 		return &Output{
 			Balance:       b.Balance,
@@ -44,9 +47,8 @@ func (uc *UseCase[In, Out]) Execute(ctx context.Context, input *Input) (*Output,
 	if b.Balance < 0 {
 		return nil, errors.ErrNotEnoughMoneyCode
 	}
-	b.Balance += input.Deposit
 
-	t, err = uc.repo.Transaction.Create(ctx, &transaction.Transaction{
+	balance, err := uc.transactionRepo.Create(ctx, &model.Transaction{
 		ID:                   input.ID,
 		PlayerName:           input.PlayerName,
 		Currency:             input.Currency,
@@ -62,16 +64,11 @@ func (uc *UseCase[In, Out]) Execute(ctx context.Context, input *Input) (*Output,
 		SpinDetailsWinType:   input.SpinDetailsWinType,
 	})
 	if err != nil {
-		return nil, err
-	}
-
-	updatedBalance, err := uc.repo.Balance.Update(ctx, b)
-	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("cannot save transaction: %w", err)
 	}
 
 	return &Output{
-		Balance:       updatedBalance.Balance,
+		Balance:       balance,
 		TransactionID: t.ID,
 	}, nil
 }

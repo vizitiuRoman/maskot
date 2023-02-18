@@ -1,4 +1,4 @@
-package jsonrpc
+package main
 
 import (
 	"net/http"
