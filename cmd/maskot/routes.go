@@ -4,9 +4,11 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/gorilla/rpc/v2"
 	"github.com/maskot/internal/handler"
+	"github.com/maskot/internal/handler/middleware"
+	"go.uber.org/zap"
 )
 
-func mustInitMux(r *handler.Rpc) (*mux.Router, error) {
+func mustInitMux(r *handler.Rpc, log *zap.Logger) (*mux.Router, error) {
 	srv := rpc.NewServer()
 
 	srv.RegisterCodec(NewUpCodec(), "application/json")
@@ -20,7 +22,9 @@ func mustInitMux(r *handler.Rpc) (*mux.Router, error) {
 
 	m := mux.NewRouter()
 
-	m.Handle("/rpc", srv)
+	logMiddleware := middleware.NewLogger(log)
+
+	m.Handle("/rpc", logMiddleware.Log(srv))
 
 	return m, nil
 }
