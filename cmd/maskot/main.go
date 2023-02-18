@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"errors"
-	"log"
 	"net/http"
 	"os"
 	"os/signal"
@@ -45,6 +44,8 @@ func initLogger(lvl string) *zap.Logger {
 }
 
 func main() {
+	log := initLogger(os.Getenv("LOG_LEVEL"))
+
 	db, closeDB, err := postgres.NewPool(&postgres.Config{
 		DBName:   os.Getenv("DB_DATABASE"),
 		Username: os.Getenv("DB_USERNAME"),
@@ -58,11 +59,9 @@ func main() {
 	}
 	defer func() {
 		if err := closeDB(); err != nil {
-			log.Panic("failed to close db pool", err)
+			log.Panic("failed to close db pool", zap.Error(err))
 		}
 	}()
-
-	log := initLogger(os.Getenv("LOG_LEVEL"))
 
 	repos := pgrepos.NewRepos(db)
 
