@@ -1,10 +1,10 @@
-package withdraw_and_deposit
+package withdrawanddeposit
 
 import (
 	"context"
 	"fmt"
 
-	"github.com/maskot/internal/helpers/use_cases"
+	"github.com/maskot/internal/helpers/usecase"
 	"github.com/maskot/internal/model"
 	"github.com/maskot/internal/repo"
 	"github.com/maskot/internal/use_cases/errors"
@@ -15,7 +15,7 @@ type UseCase[In, Out any] struct {
 	transactionRepo repo.Transaction
 }
 
-func NewUseCase(balanceRepo repo.Balance, transactionRepo repo.Transaction) use_cases.UseCase[Input, Output] {
+func NewUseCase(balanceRepo repo.Balance, transactionRepo repo.Transaction) usecase.UseCase[Input, Output] {
 	return &UseCase[Input, Output]{
 		balanceRepo:     balanceRepo,
 		transactionRepo: transactionRepo,

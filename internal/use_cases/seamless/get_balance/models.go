@@ -1,4 +1,4 @@
-package get_balance
+package getbalance
 
 type Input struct {
 	PlayerName string

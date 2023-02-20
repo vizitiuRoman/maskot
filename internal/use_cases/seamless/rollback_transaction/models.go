@@ -1,4 +1,4 @@
-package rollback_transaction
+package rollbacktransaction
 
 type Input struct {
 	TransactionRef string

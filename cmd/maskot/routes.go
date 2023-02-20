@@ -8,7 +8,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func mustInitMux(r *handler.Rpc, log *zap.Logger) (*mux.Router, error) {
+func mustInitMux(r *handler.RPC, log *zap.Logger) (*mux.Router, error) {
 	srv := rpc.NewServer()
 
 	srv.RegisterCodec(NewUpCodec(), "application/json")

@@ -12,7 +12,7 @@ type BalanceRepository struct {
 	db *sqlx.DB
 }
 
-func (r *BalanceRepository) Save(ctx context.Context, input *model.Balance) (output *model.Balance, error error) {
+func (r *BalanceRepository) Save(ctx context.Context, input *model.Balance) (*model.Balance, error) {
 	query := `
 		INSERT INTO balance(balance, player_name)
         VALUES($1, $2)
@@ -35,7 +35,7 @@ func (r *BalanceRepository) Save(ctx context.Context, input *model.Balance) (out
 	return &b, err
 }
 
-func (r *BalanceRepository) Update(ctx context.Context, input *model.Balance) (output *model.Balance, error error) {
+func (r *BalanceRepository) Update(ctx context.Context, input *model.Balance) (*model.Balance, error) {
 	query := `
 		UPDATE balance
     		SET balance = $1
@@ -58,7 +58,7 @@ func (r *BalanceRepository) Update(ctx context.Context, input *model.Balance) (o
 	return &b, err
 }
 
-func (r *BalanceRepository) Find(ctx context.Context, id string) (output *model.Balance, error error) {
+func (r *BalanceRepository) Find(ctx context.Context, id string) (*model.Balance, error) {
 	query := `
 		SELECT * FROM balance
         WHERE player_name = $1 LIMIT 1
@@ -72,7 +72,7 @@ func (r *BalanceRepository) Find(ctx context.Context, id string) (output *model.
 	return &b, err
 }
 
-func (r *BalanceRepository) FindOrCreate(ctx context.Context, id string) (output *model.Balance, error error) {
+func (r *BalanceRepository) FindOrCreate(ctx context.Context, id string) (*model.Balance, error) {
 	b, err := r.Find(ctx, id)
 	if err == nil {
 		return b, nil

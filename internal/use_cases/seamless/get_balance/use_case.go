@@ -1,10 +1,10 @@
-package get_balance
+package getbalance
 
 import (
 	"context"
 	"errors"
 
-	"github.com/maskot/internal/helpers/use_cases"
+	"github.com/maskot/internal/helpers/usecase"
 	"github.com/maskot/internal/repo"
 )
 
@@ -12,7 +12,7 @@ type UseCase[In, Out any] struct {
 	balanceRepo repo.Balance
 }
 
-func NewUseCase(balanceRepo repo.Balance) use_cases.UseCase[Input, Output] {
+func NewUseCase(balanceRepo repo.Balance) usecase.UseCase[Input, Output] {
 	return &UseCase[Input, Output]{
 		balanceRepo: balanceRepo,
 	}

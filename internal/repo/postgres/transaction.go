@@ -43,6 +43,11 @@ func (r *TransactionRepository) Create(ctx context.Context, input *model.Transac
     		WHERE id = $2
 			returning
     			balance
+func isUniqueViolation(err error) bool {
+	pgErr, ok := err.(*pq.Error)
+	return ok && pgErr.Code == "23505"
+}
+
 		`
 		row = tx.QueryRowContext(ctx, updateBalance, input.Withdraw, input.Deposit, balanceID)
 
@@ -104,7 +109,7 @@ func (r *TransactionRepository) Rollback(ctx context.Context, id int, playerName
 	})
 }
 
-func (r *TransactionRepository) Find(ctx context.Context, transactionRef string) (output *model.Transaction, error error) {
+func (r *TransactionRepository) Find(ctx context.Context, transactionRef string) (*model.Transaction, error) {
 	query := `
 		SELECT * FROM transactions
         WHERE transaction_ref = $1 LIMIT 1

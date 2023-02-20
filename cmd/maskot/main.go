@@ -12,9 +12,9 @@ import (
 	"github.com/maskot/internal/handler"
 	"github.com/maskot/internal/infra/postgres"
 	pgrepos "github.com/maskot/internal/repo/postgres"
-	"github.com/maskot/internal/use_cases/seamless/get_balance"
-	"github.com/maskot/internal/use_cases/seamless/rollback_transaction"
-	"github.com/maskot/internal/use_cases/seamless/withdraw_and_deposit"
+	gb "github.com/maskot/internal/use_cases/seamless/get_balance"
+	rb "github.com/maskot/internal/use_cases/seamless/rollback_transaction"
+	wad "github.com/maskot/internal/use_cases/seamless/withdraw_and_deposit"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -65,11 +65,11 @@ func main() {
 
 	repos := pgrepos.NewRepos(db)
 
-	wadUseCase := withdraw_and_deposit.NewUseCase(repos.Balance, repos.Transaction)
-	rtUseCase := rollback_transaction.NewUseCase(repos.Balance, repos.Transaction)
-	gbUseCase := get_balance.NewUseCase(repos.Balance)
+	wadUseCase := wad.NewUseCase(repos.Balance, repos.Transaction)
+	rtUseCase := rb.NewUseCase(repos.Balance, repos.Transaction)
+	gbUseCase := gb.NewUseCase(repos.Balance)
 
-	rpcHandler := handler.NewRpc(&handler.RpcConfig{
+	rpcHandler := handler.NewRPC(&handler.RPCConfig{
 		GbUseCase:  gbUseCase,
 		WadUseCase: wadUseCase,
 		RtUseCase:  rtUseCase,

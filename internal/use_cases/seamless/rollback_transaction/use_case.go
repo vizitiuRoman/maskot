@@ -1,10 +1,10 @@
-package rollback_transaction
+package rollbacktransaction
 
 import (
 	"context"
 	"fmt"
 
-	"github.com/maskot/internal/helpers/use_cases"
+	"github.com/maskot/internal/helpers/usecase"
 	"github.com/maskot/internal/repo"
 )
 
@@ -13,7 +13,7 @@ type UseCase[In, Out any] struct {
 	transactionRepo repo.Transaction
 }
 
-func NewUseCase(balanceRepo repo.Balance, transactionRepo repo.Transaction) use_cases.UseCase[Input, Output] {
+func NewUseCase(balanceRepo repo.Balance, transactionRepo repo.Transaction) usecase.UseCase[Input, Output] {
 	return &UseCase[Input, Output]{
 		balanceRepo:     balanceRepo,
 		transactionRepo: transactionRepo,

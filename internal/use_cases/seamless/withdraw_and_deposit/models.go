@@ -1,4 +1,4 @@
-package withdraw_and_deposit
+package withdrawanddeposit
 
 type Input struct {
 	ID                   int
